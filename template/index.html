@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A link aggregator." />
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/main.css" />
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <title>29.FYI</title>
+  </head>
+
+  <body>
+    <nav>
+      <a href="/"><img src="/static/logo.svg" alt="29.FYI" height=40 /></a>
+    </nav>
+
+    <ol>
+      {{range .}}<li><a href="{{.URL}}">{{.Headline}}</a></li>{{end}}
+    </ol>
+
+    <form method="POST" action="/submit">
+      <input type="text" name="headline" placeholder="Headline" minlength="4" maxlength="80" required>
+      <input type="url" name="url" placeholder="URL" minlength="4" maxlength="80" required>
+      <input type="submit">
+    </form>
+  </body>
+</html>
