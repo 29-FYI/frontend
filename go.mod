@@ -1,4 +1,4 @@
-module github.com/29-fyi/29.fyi
+module github.com/29-FYI/frontend
 
 go 1.14
 
