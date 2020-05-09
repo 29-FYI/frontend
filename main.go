@@ -7,8 +7,6 @@ import (
 	"github.com/29-FYI/twentynine"
 )
 
-const homepage = "https://29.fyi"
-
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
@@ -60,7 +58,8 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	http.Redirect(w, r, homepage, http.StatusSeeOther)
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func main() {
