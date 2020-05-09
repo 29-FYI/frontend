@@ -1,3 +1,5 @@
+/* general */
+
 body {
   font-family: monospace, monospace;
   max-width: 64rem;
@@ -7,10 +9,23 @@ body {
   padding: 1rem;
 }
 
-input {
-  width: 100%;
+/* link form */
+
+#form {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-areas: "headline headline headline headline button" "url url url url button";
 }
 
-input[type=submit] {
-  display: none;
+#headline {
+  grid-area: headline;
+}
+
+#url {
+  grid-area: url;
+}
+
+#button {
+  grid-area: button;
 }

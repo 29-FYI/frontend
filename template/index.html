@@ -14,14 +14,18 @@
       <a href="/"><img src="/static/logo.svg" alt="29.FYI" height=40 /></a>
     </nav>
 
+    <hr>
+
     <ol>
       {{range .}}<li><a href="{{.URL}}">{{.Headline}}</a></li>{{end}}
     </ol>
 
-    <form method="POST" action="/submit">
-      <input type="text" name="headline" placeholder="Headline" minlength="4" maxlength="128" required>
-      <input type="url" name="url" placeholder="URL" minlength="4" maxlength="128" required>
-      <input type="submit">
+    <hr>
+
+    <form id="form" method="POST" action="/submit">
+      <input id="headline" type="text" name="headline" placeholder="Headline" minlength="4" maxlength="128" required>
+      <input id="url" type="url" name="url" placeholder="URL" minlength="4" maxlength="128" required>
+      <input id="button" type="submit" value="Link">
     </form>
   </body>
 </html>
