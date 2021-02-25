@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -16,9 +16,13 @@
 
     <hr>
 
+{{if .}}
     <ol>
       {{range .}}<li><a href="{{.URL}}">{{.Headline}}</a></li>{{end}}
     </ol>
+{{else}}
+    <p>Nothing to see here.</p>
+{{end}}
 
     <hr>
 
