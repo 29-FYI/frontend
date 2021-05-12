@@ -3,15 +3,14 @@
 :root {
   --color1: white;
   --color2: black;
-  --color3: grey;
-  --filter: none;
+  --outline: none;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --color1: black;
     --color2: white;
-    --filter: invert(1);
+    --outline: solid 1px white;
   }
 }
 
@@ -31,7 +30,7 @@ body {
 /* logo */
 
 img {
-  filter: var(--filter);
+  outline: var(--outline);
 }
 
 /* links */
@@ -45,10 +44,9 @@ a {
 input {
   font-family: inherit;
   padding: 0.25rem 0.5rem;
-  margin: 0;
-  border: none;
+  border: solid 1px var(--color2);
   border-radius: 0;
-  outline: solid 1px var(--color2);
+  margin: 2px;
   background-color: var(--color1);
   color: var(--color2);
   -webkit-appearance: none;

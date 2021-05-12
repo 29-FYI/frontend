@@ -6,31 +6,42 @@
     <meta name="description" content="A link aggregator." />
     <link rel="stylesheet" type="text/css" media="screen" href="/static/main.css" />
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
-    <link rel="mask-icon" href="/static/mask-icon.svg" color="black">
+    <link rel="mask-icon" href="/static/mask-icon.svg" color="black" />
     <title>29.FYI</title>
   </head>
 
   <body>
     <nav>
-      <a href="/"><img src="/static/logo.svg" alt="29.FYI" height=40 /></a>
+      <a href="/"><img src="/static/logo.svg" alt="29.FYI" height="40" /></a>
     </nav>
 
-    <hr>
+    <hr />
 
-{{if .}}
+    {{if .}}
     <ol>
-      {{range .}}<li><a href="{{.URL}}">{{.Headline}}</a></li>{{end}}
+      {{range .}}
+      <li><a href="{{.URL}}">{{.Headline}}</a></li>
+      {{end}}
     </ol>
-{{else}}
+    {{else}}
     <p>Nothing to see here.</p>
-{{end}}
+    {{end}}
 
-    <hr>
+    <hr />
 
     <form id="form" method="POST" action="/submit">
-      <input id="headline" type="text" name="headline" placeholder="Headline" minlength="4" maxlength="128" required aria-label="Headline">
-      <input id="url" type="url" name="url" placeholder="URL" minlength="4" maxlength="128" required aria-label="URL">
-      <input id="button" type="submit" value="Link">
+      <input
+        id="headline"
+        type="text"
+        name="headline"
+        placeholder="Headline"
+        minlength="4"
+        maxlength="128"
+        required
+        aria-label="Headline"
+      />
+      <input id="url" type="url" name="url" placeholder="URL" minlength="4" maxlength="128" required aria-label="URL" />
+      <input id="button" type="submit" value="Link" />
     </form>
   </body>
 </html>
