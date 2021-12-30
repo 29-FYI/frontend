@@ -2,22 +2,21 @@ package main
 
 import (
 	"html/template"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/29-FYI/twentynine"
+	"github.com/go-chi/chi/v5"
 )
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
-		return
-	}
-	if r.URL.Path != "/" {
-		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-		return
-	}
+type twentyninefyi struct {
+	cli    *twentynine.Client
+	logger *log.Logger
+}
 
-	links, err := twentynine.GetLinks()
+func (tnfyi *twentyninefyi) IndexHandler(w http.ResponseWriter, r *http.Request) {
+	links, err := tnfyi.cli.Links()
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
@@ -32,24 +31,15 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, links)
 }
 
-func staticHandler(w http.ResponseWriter, r *http.Request) {
+func (tnfyi *twentyninefyi) StaticHandler(w http.ResponseWriter, r *http.Request) {
 	http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))).ServeHTTP(w, r)
 }
 
-func formHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
-		return
-	}
-	if r.URL.Path != "/submit" {
-		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-		return
-	}
-
+func (tnfyi *twentyninefyi) FormHandler(w http.ResponseWriter, r *http.Request) {
 	headline := r.PostFormValue("headline")
 	url := r.PostFormValue("url")
 
-	if err := twentynine.PostLink(twentynine.Link{
+	if err := tnfyi.cli.LinkLink(twentynine.Link{
 		Headline: headline,
 		URL:      url,
 	}); err != nil {
@@ -62,9 +52,30 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
+func (tnfyi *twentyninefyi) Handler() http.Handler {
+	rtr := chi.NewRouter()
+	rtr.Get("/", tnfyi.IndexHandler)
+	rtr.Get("/static/*", tnfyi.StaticHandler)
+	rtr.Post("/submit", tnfyi.FormHandler)
+	return rtr
+}
+
 func main() {
-	http.HandleFunc("/", indexHandler)
-	http.HandleFunc("/static/", staticHandler)
-	http.HandleFunc("/submit", formHandler)
-	http.ListenAndServe(":6970", nil)
+	// logger
+	logger := log.New(os.Stderr, "", log.Lshortfile)
+
+	// client
+	cli := twentynine.NewClient()
+
+	// handler
+	tnfyi := twentyninefyi{
+		cli:    cli,
+		logger: logger,
+	}
+	hndlr := tnfyi.Handler()
+
+	// HTTP
+	if err := http.ListenAndServe(":http", hndlr); err != nil {
+		logger.Fatalf("HTTP server: %s", err)
+	}
 }
