@@ -64,8 +64,12 @@ func main() {
 	// logger
 	logger := log.New(os.Stderr, "", log.Lshortfile)
 
-	// client
-	cli := twentynine.NewClient()
+	// client and url
+	url := twentynine.TwentyNineApiUrl
+	if envUrl, ok := os.LookupEnv("29_FYI_API_URL"); ok {
+		url = envUrl
+	}
+	cli := twentynine.NewClient(twentynine.OptURL(url))
 
 	// handler
 	tnfyi := twentyninefyi{
